@@ -22,11 +22,30 @@
 #define motor4in2 8
 #define motor4ENB 12
 
+// Motor speed
+int motorA=0,motorB=0;
+
 void motor(){
-    pinMode(motor1,OUTPUT);
-    pinMode(motor2,OUTPUT);
-    pinMode(motor3,OUTPUT);
-    pinMode(motor4,OUTPUT);
+    // 1st motor
+    pinMode(motor1in1,OUTPUT);
+    pinMode(motor1in2,OUTPUT);
+    pinMode(motor1ENA,OUTPUT);
+    
+    //2nd motor
+    pinMode(motor2in1,OUTPUT);
+    pinMode(motor2in2,OUTPUT);
+    pinMode(motor2ENB,OUTPUT);
+
+    //3rd motor
+    pinMode(motor3in1,OUTPUT);
+    pinMode(motor3in2,OUTPUT);
+    pinMode(motor3ENA,OUTPUT);
+
+    //4th motor
+    pinMode(motor4in1,OUTPUT);
+    pinMode(motor4in2,OUTPUT);
+    pinMode(motor4ENB,OUTPUT);
+
 }
 
 void setup(){
