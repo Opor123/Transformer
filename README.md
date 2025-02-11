@@ -9,7 +9,7 @@ This project aims to develop a system capable of transforming an RC (Remote Cont
 ### Develop a modular system
     
  Design components for easy and reliable transition between RC and drone modes.  This modularity will be key for future expansion of the system's capabilities.
-
+#
 
 ## Technical Approach
 

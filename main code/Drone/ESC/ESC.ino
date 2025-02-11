@@ -13,7 +13,26 @@ MPU6050 IMU;
 
 int motor1Speed=0,motor2Speed=0,motor3Speed=0,motor4Speed=0;
 
+// Uncomment the code below this incase we have the ultrasonic sensor
+/*
 
+#define trig_pin 6
+#define echo_pin 7
+
+double distance(){
+  digitalWrite(trig_pin,LOW);
+  delayMicroseconds(2);
+  digitalWrite(trig_pin,HIGH);
+  delayMicroseconds(2);
+  digitalWrite(trig_pin,LOW);
+
+  long duration = purseIn(echo_pin,HIGH);
+  double dis=(duration*0.034)/2;
+  return dis;
+
+}
+
+*/
 
 void motor(){
     pinMode(esc1, OUTPUT);
@@ -96,6 +115,12 @@ void setup(){
     analogWrite(esc3,motor3Speed);
     analogWrite(esc4,motor4Speed);
     delay(3000);
+
+    //uncomment code under this if had ultrasonic
+    /*
+    pinMode(trig_pin,OUTPUT);
+    pinMode(echo_pin,INPUT);
+    */
 }
 
 void loop(){
