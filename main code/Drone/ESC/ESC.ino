@@ -1,3 +1,10 @@
+/* 
+#include<MPU6050.h> // If we have IMU can uncomment it later
+MPU6050 IMU;
+*/
+
+
+
 //Define ESC pins for drone
 #define esc1 8
 #define esc2 9
@@ -5,6 +12,8 @@
 #define esc4 11
 
 int motor1Speed=0,motor2Speed=0,motor3Speed=0,motor4Speed=0;
+
+
 
 void motor(){
     pinMode(esc1, OUTPUT);

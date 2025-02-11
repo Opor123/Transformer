@@ -25,7 +25,6 @@ void turnRight(){
   motor1Speed=128;
   motor2Speed=255;
 
-
   analogWrite(esc1,motor1Speed);
   analogWrite(esc2,motor2Speed);
 
