@@ -3,7 +3,7 @@
 MPU6050 IMU;
 */
 
-
+#include<Wire.h>
 
 //Define ESC pins for drone
 #define esc1 8
@@ -124,5 +124,5 @@ void setup(){
 }
 
 void loop(){
-
+  //Add function for testing all of the function 
 }

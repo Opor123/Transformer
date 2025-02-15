@@ -1,3 +1,5 @@
+#include<Wire.h>
+
 //Define ESC pins for RC can adjust later
 #define esc1 8
 #define esc2 9
@@ -71,5 +73,5 @@ void setup(){
 }
 
 void loop(){
-
+  //Add function when you want to test any function
 }
