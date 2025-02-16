@@ -1,77 +1,137 @@
-#include<Wire.h>
+// Include library section
+#include <Wire.h>
+#include <Servo.h>
 
-//Define ESC pins for RC can adjust later
-#define esc1 8
-#define esc2 9
+// Define ESC pins for RC (can adjust later)
+#define ESC1_PIN 8
+#define ESC2_PIN 9
 
+// Define Servo pins (can adjust later)
+#define SERVO1_PIN 3
+#define SERVO2_PIN 4
 
-int motor1Speed=0,motor2Speed=0,motor3Speed=0,motor4Speed=0;
+// Define Position of the servo
+int pos = 0;
 
-void motor(){
-    pinMode(esc1, OUTPUT);
-    pinMode(esc2, OUTPUT);
+// Define motor speeds (constants for clarity)
+#define MOTOR_FORWARD_SPEED 255
+#define MOTOR_BACKWARD_SPEED -255
+#define MOTOR_TURN_SPEED_HIGH 255
+#define MOTOR_TURN_SPEED_LOW 128
+
+/*
+Define state of the transformation (using an enum for better readability)
+
+0 = RC mode
+
+1 = Drone Mode
+*/
+
+enum Mode {
+  RC_MODE = 0,
+  DRONE_MODE = 1
+};
+
+Mode currentMode = RC_MODE; // Start in RC mode
+
+/*==========================================================*/
+
+// Motor control functions
+
+void initializeMotors() {
+  pinMode(ESC1_PIN, OUTPUT);
+  pinMode(ESC2_PIN, OUTPUT);
 }
 
-// Moving Forward
-void forward(){
-  motor1Speed=255;
-  motor2Speed=255;
-
-  analogWrite(esc1,motor1Speed);
-  analogWrite(esc2,motor2Speed);
-
+void setMotorSpeeds(int speed1, int speed2) {
+  analogWrite(ESC1_PIN, speed1);
+  analogWrite(ESC2_PIN, speed2);
 }
 
-// Turn Right
-void turnRight(){
-  motor1Speed=128;
-  motor2Speed=255;
-
-  analogWrite(esc1,motor1Speed);
-  analogWrite(esc2,motor2Speed);
-
+void moveForward() {
+  setMotorSpeeds(MOTOR_FORWARD_SPEED, MOTOR_FORWARD_SPEED);
 }
 
-// Turn Left
-void turnLeft(){
-  motor1Speed=255;
-  motor2Speed=128;
-
-
-  analogWrite(esc1,motor1Speed);
-  analogWrite(esc2,motor2Speed);
-
+void moveBackward() {
+  setMotorSpeeds(MOTOR_BACKWARD_SPEED, MOTOR_BACKWARD_SPEED);
 }
 
-// Move Backward
-void back(){
-  motor1Speed= -255;
-  motor2Speed= -255;
-
-
-  analogWrite(esc1,motor1Speed);
-  analogWrite(esc2,motor2Speed);
+void turnRight() {
+  setMotorSpeeds(MOTOR_TURN_SPEED_LOW, MOTOR_TURN_SPEED_HIGH);
 }
 
-//Stop
-void stop(){
-  motor1Speed=0;
-  motor2Speed=0;
-
-
-  analogWrite(esc1,motor1Speed);
-  analogWrite(esc2,motor2Speed);
+void turnLeft() {
+  setMotorSpeeds(MOTOR_TURN_SPEED_HIGH, MOTOR_TURN_SPEED_LOW);
 }
 
-void setup(){
-
-    motor();
-
-    analogWrite(esc1,motor1Speed);
-    analogWrite(esc2,motor2Speed);
-    delay(3000);
+void stopMotors() {
+  setMotorSpeeds(0, 0);
 }
 
-void loop(){
-  //Add function when you want to test any function
+
+// Servo control functions
+
+Servo servo1;
+Servo servo2;
+
+void initializeServos() {
+  servo1.attach(SERVO1_PIN);
+  servo2.attach(SERVO2_PIN);
+}
+
+void setServosPosition(int position) {
+  servo1.write(position);
+  servo2.write(position);  // Assuming both servos move together
+}
+
+
+// Mode-specific functions
+
+void handleRCMode() {
+  //Implement RC control logic here.
+  if (pos>=90) {
+    SERVO1_PIN.write(0); // Example position
+    delay(15);
+  }
+}
+
+void handleDroneMode() {
+  // Implement Drone control logic here.
+  if (pos<=0) {
+    SERVO2_PIN.write(90);  // Example position
+    delay(15);
+  }
+}
+
+
+// Setup and Loop functions
+
+void setup() {
+  initializeMotors();
+  initializeServos();
+
+  // Calibrate ESCs (important!  This is a simplified version; adapt as needed)
+  setMotorSpeeds(0, 0);
+  delay(3000); // Give time for ESC calibration
+}
+
+void loop() {
+  switch (currentMode) {
+    case RC_MODE:
+      handleRCMode();
+      break;
+    case DRONE_MODE:
+      handleDroneMode();
+      break;
+  }
+
+  // Example of using motor functions:
+  // moveForward();
+  // delay(1000);
+  // stopMotors();
+  // delay(500);
+  // turnRight();
+  // delay(500);
+  // stopMotors();
+
 }
