@@ -1,4 +1,5 @@
 // Include library section
+#include <SPI.h>
 #include <Wire.h>
 #include <Servo.h>
 
@@ -75,8 +76,8 @@ Servo servo1;
 Servo servo2;
 
 void initializeServos() {
-  servo1.attach(SERVO1_PIN);
-  servo2.attach(SERVO2_PIN);
+  servo1.attach(SERVO1_PIN); // change the SERVO_PIN to the pin that servo attach too
+  servo2.attach(SERVO2_PIN); // change the SERVO_PIN to the pin that servo attach too
 }
 
 void setServosPosition(int position) {
@@ -90,7 +91,7 @@ void setServosPosition(int position) {
 void handleRCMode() {
   //Implement RC control logic here.
   if (pos>=90) {
-    SERVO1_PIN.write(0); // Example position
+    servo1.write(0); // Example position
     delay(15);
   }
 }
@@ -98,31 +99,38 @@ void handleRCMode() {
 void handleDroneMode() {
   // Implement Drone control logic here.
   if (pos<=0) {
-    SERVO2_PIN.write(90);  // Example position
+    servo2.write(90);  // Example position
     delay(15);
   }
+}
+
+//This will change if communication change
+// SPI Send Function
+void sendSPICommand(char command) {
+  digitalWrite(SPI_SS_PIN, LOW);  // Select drone board
+  SPI.transfer(command);          // Send command
+  digitalWrite(SPI_SS_PIN, HIGH); // Deselect
 }
 
 
 // Setup and Loop functions
 
 void setup() {
+  Serial.begin(115200);
+  SPI.begin();           // Initialize SPI
+  pinMode(SPI_SS_PIN, OUTPUT);
+  
   initializeMotors();
   initializeServos();
 
-  // Calibrate ESCs (important!  This is a simplified version; adapt as needed)
+  // Calibrate ESCs
   setMotorSpeeds(0, 0);
-  delay(3000); // Give time for ESC calibration
+  delay(3000);
 }
 
 void loop() {
-  switch (currentMode) {
-    case RC_MODE:
-      handleRCMode();
-      break;
-    case DRONE_MODE:
-      handleDroneMode();
-      break;
+  if(currentMode==RC_MODE){
+    
   }
 
   // Example of using motor functions:
